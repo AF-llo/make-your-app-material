@@ -8,6 +8,12 @@ buildscript {
         jcenter()
     }
 }
+
+ext {
+    build_tools_version = '24.0.3'
+    support_tools_version = '24.2.1'
+}
+
 allprojects {
     repositories {
         jcenter()

@@ -13,22 +13,30 @@ repositories {
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 24
+    buildToolsVersion "$build_tools_version"
 
     defaultConfig {
+        applicationId "de.lokaizyk.xyzreader"
+        versionCode Integer.parseInt(Calendar.getInstance().format("yyyyMMdd") + "01")
+        versionName "1.0"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 24
+    }
+
+    dataBinding {
+        enabled true
     }
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:22.0.0'
-    compile 'com.android.support:support-v13:22.0.0'
-    compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.android.support:palette-v7:22.0.0'
-    compile 'com.android.support:recyclerview-v7:22.0.0'
-    compile 'com.android.support:cardview-v7:22.0.0'
-    compile 'com.squareup.okhttp3:okhttp:3.1.2'
+    compile "com.android.support:support-v4:$support_tools_version"
+    compile "com.android.support:support-v13:$support_tools_version"
+    compile "com.android.support:appcompat-v7:$support_tools_version"
+    compile "com.android.support:design:$support_tools_version"
+    compile "com.android.support:palette-v7:$support_tools_version"
+    compile "com.android.support:recyclerview-v7:$support_tools_version"
+    compile "com.android.support:cardview-v7:$support_tools_version"
+    compile "com.squareup.okhttp3:okhttp:3.1.2"
     compile files('libs/volley.jar')
 }

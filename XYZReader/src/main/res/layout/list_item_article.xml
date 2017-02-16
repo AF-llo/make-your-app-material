@@ -2,10 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="4dp"
-    android:layout_marginRight="4dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
+    android:layout_margin="@dimen/spacing_m"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?selectableItemBackground">
@@ -19,7 +16,7 @@
         <com.example.xyzreader.ui.DynamicHeightNetworkImageView
             android:id="@+id/thumbnail"
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="0dp"
             android:background="@color/photo_placeholder" />
 
         <TextView
@@ -45,7 +42,6 @@
             android:paddingBottom="16dp"
             android:textColor="#6000"
             android:maxLines="1"
-            android:singleLine="true"
             android:ellipsize="end" />
     </LinearLayout>
 

@@ -1,10 +1,11 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
-            name="detailsFragmetn"
+            name="detailsFragment"
             type="com.example.xyzreader.ui.ArticleDetailFragment"/>
     </data>
 
@@ -81,7 +82,8 @@
                             style="?android:attr/textAppearanceSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="#8fff"/>
+                            android:textColor="#8fff"
+                            app:textsequence="@{detailsFragment.mByLineSequence}"/>
                     </LinearLayout>
 
                     <TextView
@@ -94,6 +96,7 @@
                         android:paddingBottom="@dimen/detail_body_bottom_margin"
                         android:textColor="@color/ltgray"
                         android:textColorLink="@color/theme_accent"
+                        android:text="@{detailsFragment.mBodySequence}"
                         android:textSize="@dimen/detail_body_text_size"
                         android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier"/>
 
@@ -110,9 +113,9 @@
             android:contentDescription="@string/action_share"
             app:fabSize="normal"
             android:clickable="true"
-            app:elevation="@dimen/fab_elevation"
+            app:elevation="@dimen/base_elevation"
             app:pressedTranslationZ="@dimen/fab_press_translation_z"
-            android:onClick="@{() -> detailsFragmetn.share()}"/>
+            android:onClick="@{() -> detailsFragment.share()}"/>
 
     </com.example.xyzreader.ui.DrawInsetsFrameLayout>
 </layout>

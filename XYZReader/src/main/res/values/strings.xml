@@ -8,5 +8,10 @@
     <string name="action_share">Share</string>
 
     <string name="up">Up</string>
+    <string name="date_by_author">%1$s by %2$s</string>
+
+
+    <item type="id" name="long_click_listener_v2_tag"/>
+    <item type="id" name="click_listener_v2_tag"/>
 
 </resources>

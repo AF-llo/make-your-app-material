@@ -4,6 +4,33 @@
         <item name="colorPrimary">@color/grey_400</item>
         <item name="colorPrimaryDark">@color/grey_700</item>
         <item name="colorAccent">@color/purple_a700</item>
+
+    </style>
+
+    <style name="BaseText" parent="@android:style/Widget.TextView">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/grey_700</item>
+    </style>
+
+    <style name="BaseText.Title">
+        <item name="android:fontFamily">sans-serif-bold</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="BaseText.Body">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="BaseText.Info">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <style name="ListText" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">2</item>
     </style>
 
 </resources>

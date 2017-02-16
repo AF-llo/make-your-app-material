@@ -1,19 +1,19 @@
 package com.example.xyzreader.ui;
 
 import android.app.Fragment;
-import android.app.LoaderManager;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -56,7 +56,8 @@ public class ArticleDetailFragment extends Fragment implements
     private int mStatusBarFullOpacityBottom;
 
     //########################################################################
-    public ObservableBoolean isLoading = new ObservableBoolean(true);
+    public ObservableField<CharSequence> mByLineSequence = new ObservableField<>();
+    public ObservableField<CharSequence> mBodySequence = new ObservableField<>();
     //########################################################################
 
     /**
@@ -100,7 +101,7 @@ public class ArticleDetailFragment extends Fragment implements
         // the fragment's onCreate may cause the same LoaderManager to be dealt to multiple
         // fragments because their mIndex is -1 (haven't been added to the activity yet). Thus,
         // we do this in onActivityCreated.
-        getLoaderManager().initLoader(0, null, this);
+        ((AppCompatActivity)getActivity()).getSupportLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -134,7 +135,7 @@ public class ArticleDetailFragment extends Fragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mBinding.setDetailsFragmetn(this);
+        mBinding.setDetailsFragment(this);
     }
 
     public void share() {
@@ -175,14 +176,13 @@ public class ArticleDetailFragment extends Fragment implements
 
     private void bindViews() {
         mBinding.articleByline.setMovementMethod(new LinkMovementMethod());
-        mBinding.articleBody.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
         if (mCursor != null) {
             mBinding.drawInsetsFrameLayout.setAlpha(0);
             mBinding.drawInsetsFrameLayout.setVisibility(View.VISIBLE);
             mBinding.drawInsetsFrameLayout.animate().alpha(1);
             mBinding.articleTitle.setText(mCursor.getString(ArticleLoader.Query.TITLE));
-            mBinding.articleByline.setText(Html.fromHtml(
+            mByLineSequence.set(Html.fromHtml(
                     DateUtils.getRelativeTimeSpanString(
                             mCursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
                             System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
@@ -190,7 +190,7 @@ public class ArticleDetailFragment extends Fragment implements
                             + " by <font color='#ffffff'>"
                             + mCursor.getString(ArticleLoader.Query.AUTHOR)
                             + "</font>"));
-            mBinding.articleBody.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY)));
+            mBodySequence.set(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY)));
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override

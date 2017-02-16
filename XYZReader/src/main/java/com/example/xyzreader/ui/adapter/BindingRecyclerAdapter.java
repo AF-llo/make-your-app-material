@@ -1,0 +1,169 @@
+package com.example.xyzreader.ui.adapter;
+
+import android.databinding.DataBindingUtil;
+import android.databinding.ObservableList;
+import android.databinding.ViewDataBinding;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import java.util.List;
+
+/**
+ * Created by lars on 15.02.17.
+ */
+
+public class BindingRecyclerAdapter<TItem> extends RecyclerView.Adapter<BindingRecyclerAdapter.MVPViewHolder> {
+
+    private int mItemId;
+    private int mLayoutId;
+    private ObservableList<TItem> mItems;
+
+    private IRecyclerViewItemClickListener<TItem> mRecyclerItemClickListener;
+
+    private IRecyclerViewItemLongClickListener<TItem> mRecyclerItemLongClickListener;
+
+    public BindingRecyclerAdapter() {
+        mItemId = -1;
+        mLayoutId = -1;
+    }
+
+    protected BindingRecyclerAdapter(int itemId, int layoutId) {
+        mItemId = itemId;
+        mLayoutId = layoutId;
+    }
+
+    public void setItems(ObservableList<TItem> items) {
+        if(items == null) {
+            throw new IllegalArgumentException(getClass().getName() + ": items must not be null.");
+        }
+
+        this.mItems = items;
+        mItems.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<TItem>>() {
+            @Override
+            public void onChanged(ObservableList<TItem> tItems) {
+
+            }
+
+            @Override
+            public void onItemRangeChanged(ObservableList<TItem> tItems, final int i, final int i1) {
+                BindingRecyclerAdapter.this.notifyItemRangeChanged(i, i1);
+            }
+
+            @Override
+            public void onItemRangeInserted(ObservableList<TItem> tItems, final int i, final int i1) {
+                BindingRecyclerAdapter.this.notifyItemRangeInserted(i, i1);
+            }
+
+            @Override
+            public void onItemRangeMoved(ObservableList<TItem> tItems, final int i, final int i1, int i2) {
+                BindingRecyclerAdapter.this.notifyItemMoved(i, i1);
+            }
+
+            @Override
+            public void onItemRangeRemoved(ObservableList<TItem> tItems, final int i, final int i1) {
+                BindingRecyclerAdapter.this.notifyItemRangeRemoved(i, i1);
+            }
+        });
+    }
+
+    public void setOnItemClickListener(IRecyclerViewItemClickListener<TItem> itemClickListener) {
+        mRecyclerItemClickListener = itemClickListener;
+    }
+
+    public void setOnItemLongClickListener(IRecyclerViewItemLongClickListener<TItem> itemLongClickListener) {
+        mRecyclerItemLongClickListener = itemLongClickListener;
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        mRecyclerItemClickListener = null;
+        mRecyclerItemLongClickListener = null;
+    }
+
+    @Override
+    public MVPViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (mItemId == -1 || mLayoutId == -1) {
+            throw new RuntimeException(
+                    "You used the wrong Constructor of "
+                            + getClass().getSimpleName()
+                            + " or you forgot to override method 'onCreateViewHolder' to create custom ViewHolder."
+            );
+        }
+        return new MVPViewHolder<>(LayoutInflater.from(parent.getContext()).inflate(mLayoutId, parent, false), mItemId, this);
+    }
+
+    @Override
+    public void onBindViewHolder(MVPViewHolder holder, int position) {
+        final TItem item = mItems.get(position);
+        holder.mBinding.setVariable(holder.mItemId, item);
+        holder.mBinding.executePendingBindings();
+        if(isClickable(item)){
+            setClickListenerToItem(holder);
+        } else {
+            holder.itemView.setOnClickListener(null);
+            holder.itemView.setOnLongClickListener(null);
+            holder.itemView.setClickable(false);
+        }
+    }
+
+    private boolean isClickable(TItem o) {
+        return !(o instanceof IClickableListItem) || ((IClickableListItem) o).isClickable();
+    }
+
+    private void setClickListenerToItem(MVPViewHolder holder){
+        holder.itemView.setOnClickListener(holder);
+        holder.itemView.setOnLongClickListener(holder);
+    }
+
+    @Override
+    public void onViewRecycled(MVPViewHolder holder) {
+        super.onViewRecycled(holder);
+        holder.itemView.setOnClickListener(null);
+        holder.itemView.setOnLongClickListener(null);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mItems == null ? 0 : mItems.size();
+    }
+
+    public static class MVPViewHolder<T> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        int mItemId;
+        public ViewDataBinding mBinding;
+        private BindingRecyclerAdapter<T> mRecyclerAdapter;
+
+        public MVPViewHolder(View itemView, int itemId, BindingRecyclerAdapter<T> recyclerAdapter) {
+            super(itemView);
+            mItemId = itemId;
+            mBinding = DataBindingUtil.bind(itemView);
+            mRecyclerAdapter = recyclerAdapter;
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+
+            if (mRecyclerAdapter.mRecyclerItemClickListener != null && position > -1) {
+                mRecyclerAdapter.mRecyclerItemClickListener
+                        .onItemClick(mRecyclerAdapter.mItems.get(position), itemView, position, mRecyclerAdapter);
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            int position = getAdapterPosition();
+
+            return position > -1 && mRecyclerAdapter.mRecyclerItemLongClickListener != null &&
+                    mRecyclerAdapter.mRecyclerItemLongClickListener
+                            .onItemLongClick(mRecyclerAdapter.mItems.get(position), itemView, position, mRecyclerAdapter);
+        }
+    }
+
+    public List<TItem> getItems() {
+        return mItems;
+    }
+
+}

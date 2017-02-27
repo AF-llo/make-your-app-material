@@ -1,4 +1,4 @@
-package com.example.xyzreader.ui;
+package com.example.xyzreader.ui.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,7 +15,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
@@ -118,11 +117,11 @@ public class ArticlesActivity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // TODO: 15.02.17 check what to handle
+
     }
 
     @Override
     public void onItemClick(ArticleItemViewModel item, View view, int position, BindingRecyclerAdapter adapter) {
-        Toast.makeText(this, "Open " + item.getTitle(), Toast.LENGTH_SHORT).show();
+        DetailsActivity.start(this, item.getId());
     }
 }

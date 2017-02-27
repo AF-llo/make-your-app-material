@@ -2,12 +2,15 @@ package com.example.xyzreader.ui.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.Html;
 
 /**
  * Created by lars on 15.02.17.
  */
 
 public class ArticleItemViewModel implements Parcelable {
+
+    private long id;
 
     private String title = "";
 
@@ -20,6 +23,19 @@ public class ArticleItemViewModel implements Parcelable {
     private String body = "";
 
     private String info = "";
+
+    private String photoUrl = "";
+
+    private ArticleItemViewModel() {
+    }
+
+    public ArticleItemViewModel(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
 
     public String getTitle() {
         return title;
@@ -74,7 +90,7 @@ public class ArticleItemViewModel implements Parcelable {
     }
 
     public String getBody() {
-        return body;
+        return Html.fromHtml(body).toString();
     }
 
     public void setBody(String body) {
@@ -84,6 +100,17 @@ public class ArticleItemViewModel implements Parcelable {
         this.body = body;
     }
 
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        if (photoUrl == null) {
+            return;
+        }
+        this.photoUrl = photoUrl;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -91,6 +118,7 @@ public class ArticleItemViewModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
         dest.writeString(this.title);
         dest.writeString(this.author);
         dest.writeString(this.info);
@@ -99,10 +127,8 @@ public class ArticleItemViewModel implements Parcelable {
         dest.writeString(this.body);
     }
 
-    public ArticleItemViewModel() {
-    }
-
     protected ArticleItemViewModel(Parcel in) {
+        this.id = in.readLong();
         this.title = in.readString();
         this.author = in.readString();
         this.info = in.readString();

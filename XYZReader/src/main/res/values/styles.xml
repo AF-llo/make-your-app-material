@@ -19,11 +19,16 @@
         <item name="android:ellipsize">end</item>
     </style>
 
+    <style name="BaseText.Title.Header">
+        <item name="android:textSize">@dimen/text_size_huge</item>
+    </style>
+
     <style name="BaseText.Body">
         <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
 
     <style name="BaseText.Info">
+        <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:maxLines">2</item>
     </style>

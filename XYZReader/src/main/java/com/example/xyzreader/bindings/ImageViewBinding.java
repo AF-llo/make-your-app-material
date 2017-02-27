@@ -12,9 +12,13 @@ import com.example.xyzreader.R;
 
 public class ImageViewBinding {
 
-    @BindingAdapter("bind:imageUrl")
-    public static void setImageUrl(ImageView imageView, String url) {
+    @BindingAdapter(value = {"bind:imageUrl", "bind:colorCallback"}, requireAll = false)
+    public static void setImageUrl(ImageView imageView, String url, ImageColorCallback callback) {
         Glide.with(imageView.getContext()).load(url).centerCrop().placeholder(R.drawable.empty_detail).into(imageView);
+    }
+
+    public interface ImageColorCallback {
+        void onImagePalete(int color);
     }
 
 }

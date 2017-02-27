@@ -22,7 +22,7 @@ public class ArticleItemsProvider {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
-                    ArticleItemViewModel item = new ArticleItemViewModel();
+                    ArticleItemViewModel item = new ArticleItemViewModel(cursor.getLong(ArticleLoader.Query._ID));
                     item.setTitle(cursor.getString(ArticleLoader.Query.TITLE));
                     item.setDate(cursor.getLong(ArticleLoader.Query.PUBLISHED_DATE));
                     item.setAuthor(cursor.getString(ArticleLoader.Query.AUTHOR));
@@ -34,6 +34,7 @@ public class ArticleItemsProvider {
                                     System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
                                     DateUtils.FORMAT_ABBREV_ALL)
                                     .toString(), cursor.getString(ArticleLoader.Query.AUTHOR)));
+                    item.setPhotoUrl(cursor.getString(ArticleLoader.Query.PHOTO_URL));
                     items.add(item);
                 } while (cursor.moveToNext());
             }

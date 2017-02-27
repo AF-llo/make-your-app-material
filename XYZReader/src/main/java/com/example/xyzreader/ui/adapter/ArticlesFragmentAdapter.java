@@ -12,7 +12,7 @@ import com.example.xyzreader.util.TransitionHelper;
  */
 
 public class ArticlesFragmentAdapter extends ObservableFragmentAdapter<ArticleItemViewModel> {
-    
+
     public ArticlesFragmentAdapter(FragmentManager fm) {
         super(fm);
     }

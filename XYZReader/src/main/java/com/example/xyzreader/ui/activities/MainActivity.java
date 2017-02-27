@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         FragmentManager manager = getSupportFragmentManager();
         if (manager.getBackStackEntryCount() > 0) {
-            TransitionHelper.resetRequrestedArticleId();
             manager.popBackStackImmediate();
         } else {
             super.onBackPressed();

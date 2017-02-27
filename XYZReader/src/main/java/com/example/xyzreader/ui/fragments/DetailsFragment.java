@@ -10,7 +10,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +32,8 @@ public class DetailsFragment extends Fragment implements AppBarLayout.OnOffsetCh
 
     public static final String ARG_ITEM = "article_item";
 
+    private static final String TAG = DetailsFragment.class.getSimpleName();
+
     private static final float MIN_OFFSET = 0.2F;
 
     public ObservableFloat alpha = new ObservableFloat();
@@ -40,6 +41,9 @@ public class DetailsFragment extends Fragment implements AppBarLayout.OnOffsetCh
     FragmentArticleDetailsBinding mBinding;
 
     public ObservableField<ArticleItemViewModel> article = new ObservableField<>();
+
+    public DetailsFragment() {
+    }
 
     public static DetailsFragment newInstance(ArticleItemViewModel articleItemViewModel, String transitionName) {
         Bundle arguments = new Bundle();
@@ -51,22 +55,9 @@ public class DetailsFragment extends Fragment implements AppBarLayout.OnOffsetCh
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        postponeEnterTransition();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_details, container, false);
-        mBinding.nestedScrollview.setNestedScrollingEnabled(true);
-        mBinding.fragmentAppbar.addOnOffsetChangedListener(this);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(mBinding.toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         return mBinding.getRoot();
     }
 
@@ -78,12 +69,16 @@ public class DetailsFragment extends Fragment implements AppBarLayout.OnOffsetCh
     @SuppressWarnings("ConstantConditions")
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        mBinding.nestedScrollview.setNestedScrollingEnabled(true);
+        mBinding.fragmentAppbar.addOnOffsetChangedListener(this);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(mBinding.toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         mBinding.setDetailsFragment(this);
         Bundle arguments = getArguments();
         if (arguments != null && arguments.containsKey(ARG_ITEM)) {
             final ArticleItemViewModel article = getArguments().getParcelable(ARG_ITEM);
             this.article.set(article);
-            String transitionName = arguments.getString(TransitionHelper.EXTRA_IMAGE_TRANSITION_NAME);
+            final String transitionName = arguments.getString(TransitionHelper.EXTRA_IMAGE_TRANSITION_NAME);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mBinding.toolbarImage.setTransitionName(transitionName);
             }
@@ -94,13 +89,13 @@ public class DetailsFragment extends Fragment implements AppBarLayout.OnOffsetCh
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            startPostponedEnterTransitionIfIsRequestedArticle(article.getId());
+                            startPostponedEnterTransition();
                             return false;
                         }
 
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            startPostponedEnterTransitionIfIsRequestedArticle(article.getId());
+                            startPostponedEnterTransition();
                             return false;
                         }
                     })
@@ -108,12 +103,6 @@ public class DetailsFragment extends Fragment implements AppBarLayout.OnOffsetCh
         }
 
         super.onViewCreated(view, savedInstanceState);
-    }
-
-    private void startPostponedEnterTransitionIfIsRequestedArticle(long articleId) {
-        if (articleId == TransitionHelper.getRequrestedArticleId()) {
-            startPostponedEnterTransition();
-        }
     }
 
     @Override

@@ -11,13 +11,13 @@ import com.example.xyzreader.ui.adapter.ObservableFragmentAdapter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
-
 /**
  * Created by lars on 16.02.17.
  */
 
 public class ViewPagerBindings {
+
+    private static final String TAG = ViewPagerBindings.class.getSimpleName();
 
     @SuppressWarnings("unchecked")
     @BindingAdapter({"items","adapter","fragmentManager"})

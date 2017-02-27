@@ -10,7 +10,7 @@ buildscript {
 }
 
 ext {
-    build_tools_version = '24.0.3'
+    build_tools_version = '25.0.2'
     support_tools_version = '25.2.0'
 }
 

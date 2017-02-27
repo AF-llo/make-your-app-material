@@ -16,6 +16,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,8 @@ import java.util.List;
  */
 
 public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor>, IRecyclerViewItemClickListener<ArticleItemViewModel, LayoutArticleListItemBinding> {
+
+    private static final String TAG = ArticlesFragment.class.getSimpleName();
 
     private static final String EXTRA_REFRESHING = "key_extra_refreshing";
 
@@ -140,12 +143,12 @@ public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public void onItemClick(ArticleItemViewModel item, LayoutArticleListItemBinding binding, int position, BindingRecyclerAdapter adapter) {
         String transitionName = TransitionHelper.getImageTransitionName(position);
-        TransitionHelper.setRequrestedArticleId(item.getId());
+        Log.d(TAG, "transitionName RecyclerItem: " + transitionName);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .addSharedElement(binding.image, transitionName)
-                .add(R.id.content, DetailsPagerFragment.newInstance(position, adapter.getItems()))
                 .addToBackStack(DetailsPagerFragment.TAG)
+                .add(R.id.content, DetailsPagerFragment.newInstance(position, adapter.getItems()))
                 .commit();
     }
 

@@ -9,20 +9,21 @@
             name="fragmentManager"
             type="android.support.v4.app.FragmentManager"/>
         <variable
-            name="detailsActivity"
-            type="com.example.xyzreader.ui.activities.DetailsActivity"/>
+            name="detailsPagerFragment"
+            type="com.example.xyzreader.ui.fragments.DetailsPagerFragment"/>
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/article_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:fragmentManager="@{fragmentManager}"
-            app:items="@{detailsActivity.mArticles}"
+            app:items="@{detailsPagerFragment.mArticles}"
             app:adapter='@{"com.example.xyzreader.ui.adapter.ArticlesFragmentAdapter"}'/>
 
         <android.support.design.widget.AppBarLayout

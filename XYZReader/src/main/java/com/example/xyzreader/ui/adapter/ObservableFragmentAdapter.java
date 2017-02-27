@@ -3,21 +3,18 @@ package com.example.xyzreader.ui.adapter;
 import android.databinding.ObservableList;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.util.SparseArray;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * Created by lars on 16.02.17.
  */
 
-public abstract class ObservableFragmentAdapter<TItem> extends FragmentPagerAdapter {
+public abstract class ObservableFragmentAdapter<TItem> extends FragmentStatePagerAdapter {
 
-    private SparseArray<Fragment> mFragments;
     protected ObservableList<TItem> mItems;
 
     public ObservableFragmentAdapter(FragmentManager fm) {
         super(fm);
-        mFragments = new SparseArray<>();
     }
 
     public void setItems(ObservableList<TItem> items) {
@@ -33,13 +30,7 @@ public abstract class ObservableFragmentAdapter<TItem> extends FragmentPagerAdap
 
     @Override
     public Fragment getItem(int position) {
-        Fragment fragment = mFragments.get(position);
-        if(fragment == null) {
-            fragment = getItem(mItems.get(position),position);
-            mFragments.put(position,fragment);
-        }
-
-        return fragment;
+        return getItem(mItems.get(position),position);
     }
 
     public abstract Fragment getItem(TItem item,int position);

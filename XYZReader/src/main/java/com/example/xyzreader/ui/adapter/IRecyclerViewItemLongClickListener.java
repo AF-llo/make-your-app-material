@@ -1,5 +1,6 @@
 package com.example.xyzreader.ui.adapter;
 
+import android.databinding.ViewDataBinding;
 import android.view.View;
 
 /**
@@ -7,6 +8,6 @@ import android.view.View;
  * <br/>
  * Wird genutzt um eine onItemLongClick-Funktionalität zu implementieren.
  */
-public interface IRecyclerViewItemLongClickListener<T> {
-    boolean onItemLongClick(T item, View view, int position, BindingRecyclerAdapter<T> adapter);
+public interface IRecyclerViewItemLongClickListener<T, V extends ViewDataBinding> {
+    boolean onItemLongClick(T item, View view, int position, BindingRecyclerAdapter<T, V> adapter);
 }

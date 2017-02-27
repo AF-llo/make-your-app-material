@@ -1,7 +1,8 @@
 package com.example.xyzreader.bindings;
 
 import android.databinding.BindingAdapter;
-import android.databinding.ObservableList;
+import android.databinding.ObservableArrayList;
+import android.databinding.ViewDataBinding;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,7 +29,7 @@ public class RecyclerViewBindings {
 
     @SuppressWarnings("unchecked")
     @BindingAdapter({"items", "adapter"})
-    public static <T> void setItemsWithAdapter(RecyclerView recyclerView, ObservableList<T> items, BindingRecyclerAdapter<T> adapter) {
+    public static <T, V extends ViewDataBinding> void setItemsWithAdapter(RecyclerView recyclerView, ObservableArrayList<T> items, BindingRecyclerAdapter<T, V> adapter) {
         if (adapter != null && recyclerView.getAdapter() == null) {
             if (recyclerView.getLayoutManager() == null) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
@@ -44,11 +45,11 @@ public class RecyclerViewBindings {
 
     @SuppressWarnings("unchecked")
     @BindingAdapter({"items", "adapter"})
-    public static <T> void setItemsWithClass(RecyclerView recyclerView, ObservableList<T> items, String adapterClass) {
+    public static <T, V extends ViewDataBinding> void setItemsWithClass(RecyclerView recyclerView, ObservableArrayList<T> items, String adapterClass) {
         try {
-            BindingRecyclerAdapter<T> adapter = (BindingRecyclerAdapter<T>) recyclerView.getAdapter();
+            BindingRecyclerAdapter<T, V> adapter = (BindingRecyclerAdapter<T, V>) recyclerView.getAdapter();
             if (adapter == null) {
-                adapter = (BindingRecyclerAdapter<T>) Class.forName(adapterClass).newInstance();
+                adapter = (BindingRecyclerAdapter<T, V>) Class.forName(adapterClass).newInstance();
                 if (recyclerView.getLayoutManager() == null) {
                     recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
                 }
@@ -67,24 +68,24 @@ public class RecyclerViewBindings {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> void addListener(RecyclerView recyclerView, BindingRecyclerAdapter<T> adapter) {
+    private static <T, V extends ViewDataBinding> void addListener(RecyclerView recyclerView, BindingRecyclerAdapter<T, V> adapter) {
 
         if (recyclerView.getTag(R.id.click_listener_v2_tag) != null && recyclerView.getTag(R.id.click_listener_v2_tag) instanceof IRecyclerViewItemClickListener) {
-            adapter.setOnItemClickListener((IRecyclerViewItemClickListener<T>) recyclerView.getTag(R.id.click_listener_v2_tag));
+            adapter.setOnItemClickListener((IRecyclerViewItemClickListener<T, V>) recyclerView.getTag(R.id.click_listener_v2_tag));
         }
 
         if (recyclerView.getTag(R.id.long_click_listener_v2_tag) != null && recyclerView.getTag(R.id.long_click_listener_v2_tag) instanceof IRecyclerViewItemLongClickListener) {
-            adapter.setOnItemLongClickListener((IRecyclerViewItemLongClickListener<T>) recyclerView.getTag(R.id.long_click_listener_v2_tag));
+            adapter.setOnItemLongClickListener((IRecyclerViewItemLongClickListener<T, V>) recyclerView.getTag(R.id.long_click_listener_v2_tag));
         }
     }
 
     @SuppressWarnings("unchecked")
     @BindingAdapter("onItemClick")
-    public static <T> void setOnItemClickListener(RecyclerView recyclerView, IRecyclerViewItemClickListener<T> itemClickListener) {
+    public static <T, V extends ViewDataBinding> void setOnItemClickListener(RecyclerView recyclerView, IRecyclerViewItemClickListener<T, V> itemClickListener) {
         if (recyclerView.getAdapter() == null) {
             recyclerView.setTag(R.id.click_listener_v2_tag, itemClickListener);
         } else {
-            ((BindingRecyclerAdapter<T>) recyclerView.getAdapter()).setOnItemClickListener(itemClickListener);
+            ((BindingRecyclerAdapter<T, V>) recyclerView.getAdapter()).setOnItemClickListener(itemClickListener);
         }
     }
 

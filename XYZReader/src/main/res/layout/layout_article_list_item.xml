@@ -16,13 +16,14 @@
         android:foreground="?selectableItemBackground">
 
         <com.example.xyzreader.ui.view.SquareImageView
+            android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:src="@drawable/empty_detail"
-            android:adjustViewBounds="true"
-            app:imageUrl="@{article.thumbImageUrl}"/>
+            android:adjustViewBounds="true"/>
 
         <TextView
+            android:id="@+id/title"
             style="@style/BaseText.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

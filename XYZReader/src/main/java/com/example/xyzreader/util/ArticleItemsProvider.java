@@ -9,6 +9,7 @@ import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.ui.model.ArticleItemViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,6 +19,9 @@ import java.util.List;
 public class ArticleItemsProvider {
 
     public static List<ArticleItemViewModel> fromCursor(Context context, Cursor cursor) {
+        if (context == null) {
+            return Collections.emptyList();
+        }
         List<ArticleItemViewModel> items = new ArrayList<>();
         if (cursor != null) {
             if (cursor.moveToFirst()) {

@@ -1,28 +1,32 @@
 package com.example.xyzreader.ui.adapter;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by lars on 15.02.17.
  */
 
-public class BindingRecyclerAdapter<TItem> extends RecyclerView.Adapter<BindingRecyclerAdapter.MVPViewHolder> {
+public class BindingRecyclerAdapter<TItem, V extends ViewDataBinding> extends RecyclerView.Adapter<BindingRecyclerAdapter.MVPViewHolder> {
+
+    private static final String TAG = BindingRecyclerAdapter.class.getSimpleName();
 
     private int mItemId;
     private int mLayoutId;
-    private ObservableList<TItem> mItems;
+    private ObservableArrayList<TItem> mItems;
 
-    private IRecyclerViewItemClickListener<TItem> mRecyclerItemClickListener;
+    private IRecyclerViewItemClickListener<TItem, V> mRecyclerItemClickListener;
 
-    private IRecyclerViewItemLongClickListener<TItem> mRecyclerItemLongClickListener;
+    private IRecyclerViewItemLongClickListener<TItem, V> mRecyclerItemLongClickListener;
 
     public BindingRecyclerAdapter() {
         mItemId = -1;
@@ -34,7 +38,7 @@ public class BindingRecyclerAdapter<TItem> extends RecyclerView.Adapter<BindingR
         mLayoutId = layoutId;
     }
 
-    public void setItems(ObservableList<TItem> items) {
+    public void setItems(ObservableArrayList<TItem> items) {
         if(items == null) {
             throw new IllegalArgumentException(getClass().getName() + ": items must not be null.");
         }
@@ -68,11 +72,11 @@ public class BindingRecyclerAdapter<TItem> extends RecyclerView.Adapter<BindingR
         });
     }
 
-    public void setOnItemClickListener(IRecyclerViewItemClickListener<TItem> itemClickListener) {
+    public void setOnItemClickListener(IRecyclerViewItemClickListener<TItem, V> itemClickListener) {
         mRecyclerItemClickListener = itemClickListener;
     }
 
-    public void setOnItemLongClickListener(IRecyclerViewItemLongClickListener<TItem> itemLongClickListener) {
+    public void setOnItemLongClickListener(IRecyclerViewItemLongClickListener<TItem, V> itemLongClickListener) {
         mRecyclerItemLongClickListener = itemLongClickListener;
     }
 
@@ -107,6 +111,15 @@ public class BindingRecyclerAdapter<TItem> extends RecyclerView.Adapter<BindingR
             holder.itemView.setOnLongClickListener(null);
             holder.itemView.setClickable(false);
         }
+        try {
+            onItemBound(item, (V) holder.mBinding, position);
+        } catch (Exception e) {
+            Log.w(TAG, "Incompatiple ViewDataBinding for ViewHolder");
+        }
+    }
+
+    public void onItemBound(TItem item, V binding, int position) {
+
     }
 
     private boolean isClickable(TItem o) {
@@ -130,12 +143,12 @@ public class BindingRecyclerAdapter<TItem> extends RecyclerView.Adapter<BindingR
         return mItems == null ? 0 : mItems.size();
     }
 
-    public static class MVPViewHolder<T> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    public static class MVPViewHolder<T, V extends ViewDataBinding> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         int mItemId;
-        public ViewDataBinding mBinding;
-        private BindingRecyclerAdapter<T> mRecyclerAdapter;
+        public V mBinding;
+        private BindingRecyclerAdapter<T, V> mRecyclerAdapter;
 
-        public MVPViewHolder(View itemView, int itemId, BindingRecyclerAdapter<T> recyclerAdapter) {
+        public MVPViewHolder(View itemView, int itemId, BindingRecyclerAdapter<T, V> recyclerAdapter) {
             super(itemView);
             mItemId = itemId;
             mBinding = DataBindingUtil.bind(itemView);
@@ -148,7 +161,7 @@ public class BindingRecyclerAdapter<TItem> extends RecyclerView.Adapter<BindingR
 
             if (mRecyclerAdapter.mRecyclerItemClickListener != null && position > -1) {
                 mRecyclerAdapter.mRecyclerItemClickListener
-                        .onItemClick(mRecyclerAdapter.mItems.get(position), itemView, position, mRecyclerAdapter);
+                        .onItemClick(mRecyclerAdapter.mItems.get(position), mBinding, position, mRecyclerAdapter);
             }
         }
 
@@ -162,7 +175,7 @@ public class BindingRecyclerAdapter<TItem> extends RecyclerView.Adapter<BindingR
         }
     }
 
-    public List<TItem> getItems() {
+    public ArrayList<TItem> getItems() {
         return mItems;
     }
 

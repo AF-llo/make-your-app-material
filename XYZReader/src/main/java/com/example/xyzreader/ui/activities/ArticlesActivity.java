@@ -14,6 +14,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 
 import com.example.xyzreader.R;
@@ -55,6 +56,7 @@ public class ArticlesActivity extends AppCompatActivity implements SwipeRefreshL
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_article_list);
         mBinding.setArticlesActivity(this);
         mBinding.swipeRefreshLayout.setOnRefreshListener(this);
+        mBinding.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.list_column_count)));
 
         setSupportActionBar(mBinding.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

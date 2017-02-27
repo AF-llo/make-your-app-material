@@ -10,56 +10,28 @@
             type="com.example.xyzreader.ui.model.ArticleItemViewModel"/>
     </data>
 
-    <android.support.v7.widget.CardView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_m"
-        android:layout_marginEnd="@dimen/spacing_m"
-        android:layout_marginTop="@dimen/spacing_s"
-        android:layout_marginBottom="@dimen/spacing_s"
-        android:clickable="true"
-        android:focusable="true"
         android:foreground="?selectableItemBackground">
 
-        <LinearLayout
+        <com.example.xyzreader.ui.view.SquareImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/grey_100">
+            tools:src="@drawable/empty_detail"
+            android:adjustViewBounds="true"
+            app:imageUrl="@{article.thumbImageUrl}"/>
 
-            <ImageView
-                android:layout_width="@dimen/thumb_height"
-                android:layout_height="@dimen/thumb_height"
-                tools:src="@drawable/empty_detail"
-                app:imageUrl="@{article.thumbImageUrl}"/>
+        <TextView
+            style="@style/BaseText.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:padding="@dimen/spacing_s"
+            android:background="@color/background_image_header"
+            android:text="@{article.title}"
+            tools:text="Mysteries of the Universe and the beginning of everything"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/article_info"
-                    style="@style/BaseText.Info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{article.info}"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="@dimen/spacing_s"
-                    tools:text="15.10.16 by Carl Sagan"/>
-
-                <TextView
-                    style="@style/BaseText.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/spacing_s"
-                    android:text="@{article.title}"
-                    tools:text="Mysteries of the Universe and the beginning of everything"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </FrameLayout>
 
 </layout>

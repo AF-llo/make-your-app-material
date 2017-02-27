@@ -4,6 +4,9 @@
 
     <data>
         <variable
+            name="layoutManager"
+            type="android.support.v7.widget.RecyclerView.LayoutManager"/>
+        <variable
             name="articlesActivity"
             type="com.example.xyzreader.ui.activities.ArticlesActivity"/>
     </data>
@@ -46,6 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scrollbarStyle="outsideOverlay"
+                    app:layoutManager="@{layoutManager}"
                     app:items="@{articlesActivity.articleItems}"
                     app:adapter='@{"com.example.xyzreader.ui.adapter.ArticlesRecyclerAdapter"}'
                     app:onItemClick="@{articlesActivity}"/>

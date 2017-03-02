@@ -26,6 +26,8 @@ public class ArticleItemViewModel implements Parcelable {
 
     private String photoUrl = "";
 
+    private float imageRatio = 1;
+
     private ArticleItemViewModel() {
     }
 
@@ -111,6 +113,15 @@ public class ArticleItemViewModel implements Parcelable {
         this.photoUrl = photoUrl;
     }
 
+    public float getImageRatio() {
+        return imageRatio;
+    }
+
+    public void setImageRatio(float imageRatio) {
+        if (imageRatio > 0)
+        this.imageRatio = imageRatio;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -125,6 +136,7 @@ public class ArticleItemViewModel implements Parcelable {
         dest.writeLong(this.date);
         dest.writeString(this.thumbImageUrl);
         dest.writeString(this.body);
+        dest.writeFloat(this.imageRatio);
     }
 
     protected ArticleItemViewModel(Parcel in) {
@@ -135,6 +147,7 @@ public class ArticleItemViewModel implements Parcelable {
         this.date = in.readLong();
         this.thumbImageUrl = in.readString();
         this.body = in.readString();
+        this.imageRatio = in.readFloat();
     }
 
     public static final Parcelable.Creator<ArticleItemViewModel> CREATOR = new Parcelable.Creator<ArticleItemViewModel>() {

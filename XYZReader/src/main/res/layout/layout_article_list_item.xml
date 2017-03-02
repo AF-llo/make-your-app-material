@@ -15,12 +15,13 @@
         android:layout_height="wrap_content"
         android:foreground="?selectableItemBackground">
 
-        <com.example.xyzreader.ui.view.SquareImageView
+        <com.example.xyzreader.ui.view.AspectImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:src="@drawable/empty_detail"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            app:aspectRatio="@{article.imageRatio}"/>
 
         <TextView
             android:id="@+id/title"

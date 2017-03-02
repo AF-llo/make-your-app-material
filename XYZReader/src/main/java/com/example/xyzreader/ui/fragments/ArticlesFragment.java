@@ -15,7 +15,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +39,7 @@ import java.util.List;
 
 public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor>, IRecyclerViewItemClickListener<ArticleItemViewModel, LayoutArticleListItemBinding> {
 
-    private static final String TAG = ArticlesFragment.class.getSimpleName();
+    public static final String TAG = ArticlesFragment.class.getSimpleName();
 
     private static final String EXTRA_REFRESHING = "key_extra_refreshing";
 
@@ -74,7 +74,7 @@ public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnR
         mBinding = DataBindingUtil.inflate(inflater, R.layout.layout_article_list, container, false);
         mBinding.setArticlesFragment(this);
         mBinding.swipeRefreshLayout.setOnRefreshListener(this);
-        mBinding.setLayoutManager(new GridLayoutManager(getContext(), getResources().getInteger(R.integer.list_column_count)));
+        mBinding.setLayoutManager(new StaggeredGridLayoutManager(getResources().getInteger(R.integer.list_column_count), StaggeredGridLayoutManager.VERTICAL));
 
         ((AppCompatActivity)getActivity()).setSupportActionBar(mBinding.toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -151,8 +151,8 @@ public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnR
         getFragmentManager()
                 .beginTransaction()
                 .addSharedElement(binding.image, transitionName)
-                .addToBackStack(TAG)
                 .replace(R.id.content, DetailsPagerFragment.newInstance(position, adapter.getItems()))
+                .addToBackStack(TAG)
                 .commit();
     }
 

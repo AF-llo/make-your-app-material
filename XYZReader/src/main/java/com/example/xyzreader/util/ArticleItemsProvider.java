@@ -39,6 +39,7 @@ public class ArticleItemsProvider {
                                     DateUtils.FORMAT_ABBREV_ALL)
                                     .toString(), cursor.getString(ArticleLoader.Query.AUTHOR)));
                     item.setPhotoUrl(cursor.getString(ArticleLoader.Query.PHOTO_URL));
+                    item.setImageRatio(cursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
                     items.add(item);
                 } while (cursor.moveToNext());
             }

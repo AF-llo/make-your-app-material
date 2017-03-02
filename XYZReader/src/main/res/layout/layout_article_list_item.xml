@@ -32,6 +32,7 @@
             android:textColor="@android:color/white"
             android:padding="@dimen/spacing_s"
             android:background="@color/background_image_header"
+            android:layout_gravity="bottom"
             android:text="@{article.title}"
             tools:text="Mysteries of the Universe and the beginning of everything"/>
 

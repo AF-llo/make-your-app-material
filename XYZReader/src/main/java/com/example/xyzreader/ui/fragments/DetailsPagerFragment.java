@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.xyzreader.R;
-import com.example.xyzreader.databinding.LayoutArticleDetailsBinding;
+import com.example.xyzreader.databinding.FragmentArticlePagerBinding;
 import com.example.xyzreader.ui.adapter.ArticlesFragmentAdapter;
 import com.example.xyzreader.ui.model.ArticleItemViewModel;
 
@@ -33,7 +33,7 @@ public class DetailsPagerFragment extends Fragment {
 
     private static final int NOT_DEFINED = -1;
 
-    private LayoutArticleDetailsBinding mBinding;
+    private FragmentArticlePagerBinding mBinding;
 
     public ObservableArrayList<ArticleItemViewModel> mArticles = new ObservableArrayList<>();
 
@@ -67,7 +67,7 @@ public class DetailsPagerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.layout_article_details, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_pager, container, false);
         mBinding.setDetailsPagerFragment(this);
         return mBinding.getRoot();
     }

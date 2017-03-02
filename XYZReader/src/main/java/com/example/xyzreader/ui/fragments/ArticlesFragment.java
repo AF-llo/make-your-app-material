@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.UpdaterService;
-import com.example.xyzreader.databinding.LayoutArticleListBinding;
+import com.example.xyzreader.databinding.FragmentArticleOverviewBinding;
 import com.example.xyzreader.databinding.LayoutArticleListItemBinding;
 import com.example.xyzreader.ui.adapter.BindingRecyclerAdapter;
 import com.example.xyzreader.ui.adapter.IRecyclerViewItemClickListener;
@@ -43,7 +43,7 @@ public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private static final String EXTRA_REFRESHING = "key_extra_refreshing";
 
-    private LayoutArticleListBinding mBinding;
+    private FragmentArticleOverviewBinding mBinding;
 
     public ObservableBoolean isRefreshing = new ObservableBoolean(false);
 
@@ -73,7 +73,7 @@ public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.layout_article_list, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_overview, container, false);
         mBinding.setArticlesFragment(this);
         mBinding.swipeRefreshLayout.setOnRefreshListener(this);
         mBinding.setLayoutManager(new StaggeredGridLayoutManager(getResources().getInteger(R.integer.list_column_count), StaggeredGridLayoutManager.VERTICAL));

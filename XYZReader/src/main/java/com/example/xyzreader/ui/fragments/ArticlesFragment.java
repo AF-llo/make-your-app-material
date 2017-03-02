@@ -49,6 +49,8 @@ public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     public ObservableArrayList<ArticleItemViewModel> articleItems = new ObservableArrayList<>();
 
+    private int itemPosition = 0;
+
     private BroadcastReceiver mRefreshingReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -81,10 +83,9 @@ public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         getActivity().getSupportLoaderManager().initLoader(0, null, this);
 
-        if (savedInstanceState == null) {
+        // fragment is
+        if (articleItems.size() == 0) {
             refreshContent();
-        } else {
-            isRefreshing = savedInstanceState.getParcelable(EXTRA_REFRESHING);
         }
         return mBinding.getRoot();
     }
@@ -99,12 +100,21 @@ public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnR
     public void onStart() {
         super.onStart();
         getContext().registerReceiver(mRefreshingReceiver, new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
+        if (itemPosition != 0) {
+            mBinding.recyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mBinding.recyclerView.scrollToPosition(itemPosition);
+                }
+            });
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
         getContext().unregisterReceiver(mRefreshingReceiver);
+        itemPosition = ((StaggeredGridLayoutManager)mBinding.recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPositions(null)[0];
     }
 
     @Override
@@ -151,8 +161,8 @@ public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnR
         getFragmentManager()
                 .beginTransaction()
                 .addSharedElement(binding.image, transitionName)
-                .replace(R.id.content, DetailsPagerFragment.newInstance(position, adapter.getItems()))
-                .addToBackStack(TAG)
+                .replace(R.id.content, DetailsPagerFragment.newInstance(position, adapter.getItems()), DetailsPagerFragment.TAG)
+                .addToBackStack(DetailsPagerFragment.TAG)
                 .commit();
     }
 

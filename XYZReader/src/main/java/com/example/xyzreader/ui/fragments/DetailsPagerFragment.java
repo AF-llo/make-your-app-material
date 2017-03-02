@@ -2,7 +2,6 @@ package com.example.xyzreader.ui.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
-import android.databinding.ObservableList;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,7 +35,7 @@ public class DetailsPagerFragment extends Fragment {
 
     private LayoutArticleDetailsBinding mBinding;
 
-    public ObservableList<ArticleItemViewModel> mArticles = new ObservableArrayList<>();
+    public ObservableArrayList<ArticleItemViewModel> mArticles = new ObservableArrayList<>();
 
     public int position = NOT_DEFINED;
 
@@ -57,6 +56,7 @@ public class DetailsPagerFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
         postponeEnterTransition();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
@@ -84,11 +84,19 @@ public class DetailsPagerFragment extends Fragment {
                 mArticles.addAll((ArrayList) extras.getParcelableArrayList(EXTRA_ARTICLES));
             }
             position = extras.getInt(EXTRA_POSITION);
-            ArticlesFragmentAdapter adapter = new ArticlesFragmentAdapter(getChildFragmentManager());
-            adapter.setItems(mArticles);
-            mBinding.articlePager.setAdapter(adapter);
-            mBinding.articlePager.setCurrentItem(position, false);
+            initAdapter();
+        } else {
+            position = savedInstanceState.getInt(EXTRA_POSITION);
+            mArticles = (ObservableArrayList) savedInstanceState.getParcelableArrayList(EXTRA_ARTICLES);
+            initAdapter();
         }
+    }
+
+    private void initAdapter() {
+        ArticlesFragmentAdapter adapter = new ArticlesFragmentAdapter(getChildFragmentManager());
+        adapter.setItems(mArticles);
+        mBinding.articlePager.setAdapter(adapter);
+        mBinding.articlePager.setCurrentItem(position, false);
     }
 
     @Override
@@ -97,6 +105,13 @@ public class DetailsPagerFragment extends Fragment {
             back();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(EXTRA_ARTICLES, mArticles);
+        outState.putInt(EXTRA_POSITION, position);
     }
 
     public void back() {

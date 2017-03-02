@@ -16,7 +16,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +60,12 @@ public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     public static ArticlesFragment newInstance() {
         return new ArticlesFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Nullable
@@ -111,8 +116,8 @@ public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(EXTRA_REFRESHING, isRefreshing);
         super.onSaveInstanceState(outState);
+        outState.putParcelable(EXTRA_REFRESHING, isRefreshing);
     }
 
     @Override
@@ -143,12 +148,11 @@ public class ArticlesFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public void onItemClick(ArticleItemViewModel item, LayoutArticleListItemBinding binding, int position, BindingRecyclerAdapter adapter) {
         String transitionName = TransitionHelper.getImageTransitionName(position);
-        Log.d(TAG, "transitionName RecyclerItem: " + transitionName);
-        getActivity().getSupportFragmentManager()
+        getFragmentManager()
                 .beginTransaction()
                 .addSharedElement(binding.image, transitionName)
-                .addToBackStack(DetailsPagerFragment.TAG)
-                .add(R.id.content, DetailsPagerFragment.newInstance(position, adapter.getItems()))
+                .addToBackStack(TAG)
+                .replace(R.id.content, DetailsPagerFragment.newInstance(position, adapter.getItems()))
                 .commit();
     }
 

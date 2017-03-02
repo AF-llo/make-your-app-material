@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.example.xyzreader.R;
 import com.example.xyzreader.ui.fragments.ArticlesFragment;
 import com.example.xyzreader.ui.fragments.DetailsPagerFragment;
-import com.example.xyzreader.util.TransitionHelper;
 
 /**
  * Created by lars on 27.02.17.
@@ -28,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         if (detailsPagerFragment == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.content, ArticlesFragment.newInstance())
+                    .add(R.id.content, ArticlesFragment.newInstance())
                     .commit();
         }
     }

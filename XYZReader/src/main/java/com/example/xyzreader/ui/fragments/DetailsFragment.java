@@ -6,10 +6,12 @@ import android.databinding.ObservableField;
 import android.databinding.ObservableFloat;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,54 +57,60 @@ public class DetailsFragment extends Fragment implements AppBarLayout.OnOffsetCh
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        postponeEnterTransition();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_details, container, false);
         return mBinding.getRoot();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
     @SuppressWarnings("ConstantConditions")
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mBinding.nestedScrollview.setNestedScrollingEnabled(true);
         mBinding.fragmentAppbar.addOnOffsetChangedListener(this);
         ((AppCompatActivity)getActivity()).setSupportActionBar(mBinding.toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mBinding.setDetailsFragment(this);
+
         Bundle arguments = getArguments();
-        if (arguments != null && arguments.containsKey(ARG_ITEM)) {
-            final ArticleItemViewModel article = getArguments().getParcelable(ARG_ITEM);
-            this.article.set(article);
-            final String transitionName = arguments.getString(TransitionHelper.EXTRA_IMAGE_TRANSITION_NAME);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mBinding.toolbarImage.setTransitionName(transitionName);
-            }
-            Glide.with(getContext())
-                    .load(article.getPhotoUrl())
-                    .dontAnimate()
-                    .centerCrop()
-                    .listener(new RequestListener<String, GlideDrawable>() {
-                        @Override
-                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            startPostponedEnterTransition();
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            startPostponedEnterTransition();
-                            return false;
-                        }
-                    })
-                    .into(mBinding.toolbarImage);
+        final ArticleItemViewModel article = getArguments().getParcelable(ARG_ITEM);
+        final String transitionName = arguments.getString(TransitionHelper.EXTRA_IMAGE_TRANSITION_NAME);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mBinding.toolbarImage.setTransitionName(transitionName);
         }
+        Glide.with(getContext())
+                .load(article.getPhotoUrl())
+                .centerCrop()
+                .dontAnimate()
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        showContent();
+                        return false;
+                    }
 
-        super.onViewCreated(view, savedInstanceState);
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        showContent();
+                        return false;
+                    }
+                })
+                .into(mBinding.toolbarImage);
+    }
+
+    private void showContent() {
+        startPostponedEnterTransition();
+        mBinding.setDetailsFragment(DetailsFragment.this);
+        DetailsFragment.this.article.set((ArticleItemViewModel) getArguments().getParcelable(ARG_ITEM));
     }
 
     @Override

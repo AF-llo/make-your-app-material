@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.databinding.LayoutArticleDetailsBinding;
+import com.example.xyzreader.ui.adapter.ArticlesFragmentAdapter;
 import com.example.xyzreader.ui.model.ArticleItemViewModel;
 
 import java.util.ArrayList;
@@ -48,6 +49,9 @@ public class DetailsPagerFragment extends Fragment {
         return fragment;
     }
 
+    public DetailsPagerFragment() {
+    }
+
     @SuppressWarnings("ConstantConditions")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,7 +69,6 @@ public class DetailsPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.layout_article_details, container, false);
         mBinding.setDetailsPagerFragment(this);
-        mBinding.setFragmentManager(getActivity().getSupportFragmentManager());
         return mBinding.getRoot();
     }
 
@@ -73,21 +76,19 @@ public class DetailsPagerFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(mBinding.toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         Bundle extras = getArguments();
         if (savedInstanceState == null) {
             if (mArticles.size() == 0) {
                 mArticles.addAll((ArrayList) extras.getParcelableArrayList(EXTRA_ARTICLES));
             }
             position = extras.getInt(EXTRA_POSITION);
-            mBinding.articlePager.post(new Runnable() {
-                @Override
-                public void run() {
-                    mBinding.articlePager.setCurrentItem(position, false);
-                }
-            });
+            ArticlesFragmentAdapter adapter = new ArticlesFragmentAdapter(getChildFragmentManager());
+            adapter.setItems(mArticles);
+            mBinding.articlePager.setAdapter(adapter);
+            mBinding.articlePager.setCurrentItem(position, false);
         }
-        ((AppCompatActivity)getActivity()).setSupportActionBar(mBinding.toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     @Override

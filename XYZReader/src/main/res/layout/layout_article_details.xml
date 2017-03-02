@@ -6,9 +6,6 @@
     <data>
         <import type="com.example.xyzreader.R.drawable"/>
         <variable
-            name="fragmentManager"
-            type="android.support.v4.app.FragmentManager"/>
-        <variable
             name="detailsPagerFragment"
             type="com.example.xyzreader.ui.fragments.DetailsPagerFragment"/>
     </data>
@@ -21,10 +18,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/article_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:fragmentManager="@{fragmentManager}"
-            app:items="@{detailsPagerFragment.mArticles}"
-            app:adapter='@{"com.example.xyzreader.ui.adapter.ArticlesFragmentAdapter"}'/>
+            android:layout_height="match_parent"/>
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"

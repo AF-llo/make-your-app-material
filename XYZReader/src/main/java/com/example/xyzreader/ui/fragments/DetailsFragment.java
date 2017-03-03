@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +42,8 @@ public class DetailsFragment extends Fragment implements AppBarLayout.OnOffsetCh
     FragmentArticleDetailsBinding mBinding;
 
     public ObservableField<ArticleItemViewModel> article = new ObservableField<>();
+
+
 
     public DetailsFragment() {
     }
@@ -134,6 +135,5 @@ public class DetailsFragment extends Fragment implements AppBarLayout.OnOffsetCh
             perOffset = MIN_OFFSET;
         }
         alpha.set(perOffset);
-        Log.d(DetailsFragment.class.getSimpleName(), "Height: " + mBinding.toolbar.getMeasuredHeight() + ", Offset: " + verticalOffset + ", Alpha: " + alpha.get());
     }
 }

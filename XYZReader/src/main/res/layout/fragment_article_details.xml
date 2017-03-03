@@ -28,10 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingLeft="@dimen/detail_inner_horiz_margin"
-                    android:paddingStart="@dimen/detail_inner_horiz_margin"
-                    android:paddingEnd="@dimen/detail_inner_horiz_margin"
-                    android:paddingRight="@dimen/detail_inner_horiz_margin">
+                    android:layout_margin="@dimen/spacing_m">
 
                     <TextView
                         android:id="@+id/article_byline"
@@ -39,7 +36,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{detailsFragment.article.info}"
-                        android:layout_marginTop="@dimen/spacing_m"
                         android:layout_marginBottom="@dimen/spacing_m"
                         android:layout_gravity="bottom|start"
                         tools:text="25. Juni 2017 by Vincent van Gough"/>
@@ -109,6 +105,8 @@
                             android:layout_marginTop="@dimen/spacing_m"
                             android:layout_marginStart="?android:attr/actionBarSize"
                             android:layout_marginLeft="?android:attr/actionBarSize"
+                            android:layout_marginEnd="@dimen/spacing_m"
+                            android:layout_marginRight="@dimen/spacing_m"
                             tools:text="The Universe and its beautiful colors and what ever yout want to see"/>
 
                     </FrameLayout>
@@ -120,6 +118,7 @@
         </android.support.design.widget.AppBarLayout>
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_m"
@@ -130,7 +129,9 @@
             android:clickable="true"
             app:elevation="@dimen/base_elevation"
             app:pressedTranslationZ="@dimen/fab_press_translation_z"
-            android:onClick="@{() -> detailsFragment.share()}"/>
+            android:onClick="@{() -> detailsFragment.share()}"
+            app:layout_anchor="@id/nested_scrollview"
+            app:layout_anchorGravity="bottom|end"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

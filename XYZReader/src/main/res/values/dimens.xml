@@ -12,13 +12,16 @@
 
     <dimen name="base_elevation">6dp</dimen>
     <dimen name="fab_press_translation_z">12dp</dimen>
-    <dimen name="fab_margin">24dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
     <dimen name="thumb_height">96dp</dimen>
 
-    <dimen name="spacing_m">16dp</dimen>
+    <dimen name="inner_margin">16dp</dimen>
     <dimen name="spacing_s">8dp</dimen>
     <dimen name="thumb_grid_height">200dp</dimen>
     <dimen name="double_line_toolbar_size">90dp</dimen>
+
+    <dimen name="toolbar_margin">72dp</dimen>
+    <dimen name="negative_details_margin">-100dp</dimen>
 
 
 </resources>

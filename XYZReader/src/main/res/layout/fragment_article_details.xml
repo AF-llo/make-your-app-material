@@ -28,7 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_margin="@dimen/spacing_m">
+                    android:layout_margin="@dimen/inner_margin">
 
                     <TextView
                         android:id="@+id/article_byline"
@@ -36,7 +36,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{detailsFragment.article.info}"
-                        android:layout_marginBottom="@dimen/spacing_m"
+                        android:layout_marginBottom="@dimen/inner_margin"
                         android:layout_gravity="bottom|start"
                         tools:text="25. Juni 2017 by Vincent van Gough"/>
 
@@ -101,12 +101,12 @@
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/white"
                             android:text="@{detailsFragment.article.title}"
-                            android:layout_marginBottom="@dimen/spacing_m"
-                            android:layout_marginTop="@dimen/spacing_m"
-                            android:layout_marginStart="?android:attr/actionBarSize"
-                            android:layout_marginLeft="?android:attr/actionBarSize"
-                            android:layout_marginEnd="@dimen/spacing_m"
-                            android:layout_marginRight="@dimen/spacing_m"
+                            android:layout_marginBottom="@dimen/inner_margin"
+                            android:layout_marginTop="@dimen/inner_margin"
+                            android:layout_marginStart="@dimen/toolbar_margin"
+                            android:layout_marginLeft="@dimen/toolbar_margin"
+                            android:layout_marginEnd="@dimen/inner_margin"
+                            android:layout_marginRight="@dimen/inner_margin"
                             tools:text="The Universe and its beautiful colors and what ever yout want to see"/>
 
                     </FrameLayout>
@@ -121,7 +121,7 @@
             android:id="@+id/fab_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_m"
+            android:layout_margin="@dimen/inner_margin"
             android:src="@drawable/ic_share"
             android:layout_gravity="bottom|end"
             android:contentDescription="@string/action_share"

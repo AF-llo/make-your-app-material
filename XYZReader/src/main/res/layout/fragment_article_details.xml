@@ -126,7 +126,6 @@
             android:layout_gravity="bottom|end"
             android:contentDescription="@string/action_share"
             app:fabSize="normal"
-            android:clickable="true"
             app:elevation="@dimen/base_elevation"
             app:pressedTranslationZ="@dimen/fab_press_translation_z"
             android:onClick="@{() -> detailsFragment.share()}"
